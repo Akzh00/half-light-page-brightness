@@ -1,0 +1,253 @@
+/* Twilight: the slider is the evening sky, and the popup dims along with the page. */
+:root {
+  --night: #14162b;
+  --deep-night: #05060d;
+  --night-floor: #0b0c1c;
+  --dusk: #2b2f57;
+  --mauve: #6b4f78;
+  --afterglow: #c97b63;
+  --horizon: #f2c79b;
+  --ink: #d9d6e8;
+  --ink-soft: #a39fc2;
+  --rose: #d4a29a;
+
+  /* 0 at 100% or brighter, 1 at the darkest setting; set by popup.js */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dim: 0;
+  --ground: color-mix(in oklab, var(--night), var(--deep-night) calc(var(--dim) * 100%));
+  --text: color-mix(in oklab, var(--ink), var(--night) calc(var(--dim) * 32%));
+  --text-soft: color-mix(in oklab, var(--ink-soft), var(--night) calc(var(--dim) * 12%));
+  /* The warm accents sink with the level too, so nothing stays at full strength */
+  --glow: color-mix(in oklab, var(--afterglow), var(--night) calc(var(--dim) * 40%));
+  --sun: color-mix(in oklab, var(--horizon), var(--night) calc(var(--dim) * 40%));
+  --link: color-mix(in oklab, var(--rose), var(--night) calc(var(--dim) * 30%));
+  /* The dark end of the slider sinks too */
+  --floor: color-mix(in oklab, var(--night-floor), var(--deep-night) calc(var(--dim) * 100%));
+  --track-dusk: color-mix(in oklab, var(--dusk), var(--deep-night) calc(var(--dim) * 40%));
+  --track-mauve: color-mix(in oklab, var(--mauve), var(--night) calc(var(--dim) * 40%));
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 260px;
+  margin: 0;
+  padding: 16px 20px 14px;
+  background: var(--ground);
+  color: var(--text);
+  font: 14px/1.4 system-ui, "Segoe UI", sans-serif;
+  transition: background-color 240ms var(--ease), color 240ms var(--ease);
+}
+
+::selection {
+  background: var(--mauve);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--sun);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* On/off switch: a real checkbox drawn as a sliding switch */
+.switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.switch input {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.track {
+  position: relative;
+  width: 30px;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--dusk);
+  transition: background-color 200ms var(--ease);
+}
+
+.track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink-soft);
+  transition: transform 200ms var(--ease), background-color 200ms;
+}
+
+.switch:hover .track {
+  background: color-mix(in oklab, var(--dusk), var(--ink-soft) 18%);
+}
+
+.switch input:checked + .track {
+  background: var(--glow);
+}
+
+.switch:hover input:checked + .track {
+  background: color-mix(in oklab, var(--glow), var(--sun) 25%);
+}
+
+.switch input:checked + .track::after {
+  transform: translateX(12px);
+  background: var(--sun);
+}
+
+.switch input:focus-visible + .track {
+  outline: 1.5px solid var(--sun);
+  outline-offset: 3px;
+}
+
+/* The level, set large so it reads at a glance in the dark */
+.level {
+  display: block;
+  margin: 14px 0 12px;
+}
+
+output {
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit {
+  margin-left: 2px;
+  font-size: 24px;
+  letter-spacing: 0;
+  color: var(--text-soft);
+}
+
+/* The slider track is the sky: night on the left, afterglow on the right */
+input[type="range"] {
+  display: block;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--floor), var(--track-dusk) 35%, var(--track-mauve) 60%, var(--glow) 82%, var(--sun));
+  box-shadow: inset 0 1px 2px rgb(5 6 13 / 0.6), 0 0 0 1px rgb(107 79 120 / 0.35);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -5px;
+  border: 3px solid var(--ground);
+  border-radius: 50%;
+  background: var(--sun);
+  box-shadow: 0 2px 6px rgb(5 6 13 / 0.6);
+  -webkit-appearance: none;
+  transition: transform 150ms var(--ease);
+}
+
+input[type="range"]:hover::-webkit-slider-thumb,
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+input[type="range"]:focus-visible {
+  outline-offset: 2px;
+}
+
+input[type="range"]:disabled {
+  cursor: default;
+}
+
+.ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+#reset {
+  display: block;
+  margin: 14px auto 0;
+  padding: 4px 8px;
+  border: 0;
+  background: none;
+  color: var(--link);
+  font: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--link), transparent 55%);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+#reset:hover {
+  color: var(--sun);
+  text-decoration-color: currentColor;
+}
+
+/* Off: the sky fades and loses most of its colour, and the level steps back */
+body.off output,
+body.off input[type="range"],
+body.off .ends {
+  opacity: 0.4;
+  filter: saturate(0.4);
+}
+
+/* No fades until the saved settings have loaded, so opening the popup never flashes */
+body:not(.ready),
+body:not(.ready) * {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
