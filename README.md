@@ -1,6 +1,6 @@
 # Half-light: Page Brightness
 
-A small browser extension that makes web pages darker or brighter with one slider. Made for tired eyes, especially at night. Works in Chrome, Edge and Brave.
+A small browser extension that makes web pages darker or brighter with one slider. Made for tired eyes, especially at night.
 
 ![Half-light popup](docs/screenshots/popup.png)
 
@@ -12,7 +12,7 @@ Half-light isn't in a browser's add-on store, so you install it by hand. It take
 1. **Download** `half-light-page-brightness-v1.0.1.zip` from the [latest release](https://github.com/Akzh00/half-light-page-brightness/releases/latest) (under **Assets**). The numbers are the version; a newer release has higher numbers.
 2. **Unzip it:** right-click the zip → **Extract All** → **Extract** (on a Mac, double-click it). You now have a folder called `half-light-page-brightness-v1.0.1`.
 3. **Move that folder somewhere permanent**, for example your Documents folder. The browser runs the extension from it, so if you delete it later, the extension stops working.
-4. **Open your browser's extensions page** by typing `chrome://extensions` in the address bar (in Edge, `edge://extensions`; in Brave, `brave://extensions`). Turn on **Developer mode**: the switch is at the top right, or on the left in Edge.
+4. **Open your browser's extensions page** by typing `chrome://extensions` in the address bar (in Edge, `edge://extensions`; in Brave, Opera or Vivaldi, the browser's name then `://extensions`). Turn on **Developer mode**: the switch is at the top right, or on the left in Edge.
 5. Click **Load unpacked**, open the `half-light-page-brightness-v1.0.1` folder and click **Select Folder**. You'll only see an `icons` folder inside; that's normal, don't open it.
 6. Half-light's icon appears in the toolbar. If you don't see it, click the puzzle-piece icon and pin **Half-light**.
 
